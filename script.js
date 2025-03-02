@@ -3,11 +3,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const startBtn = document.getElementById("startBtn");
     const stopBtn = document.getElementById("stopBtn");
     const resetBtn = document.getElementById("resetBtn");
+    const break_button = document.getElementById("breakBtn");
 
     let timer = null;
     let startTime = 0;
     let elapsedTime = 0;
     let isRunning = false;
+
+    let countDownTimer = null;
+    let countDownTime = 0;
 
     function start() {
         if (!isRunning) {
@@ -27,10 +31,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function reset() {
         clearInterval(timer);
+        clearInterval(countDownTimer);
         startTime = 0;
         elapsedTime = 0;
         isRunning = false;
+        countDownTime = 0;
         display.textContent = "00:00:00.00";
+    }
+
+    function breakBtn() {
+        if (isRunning) {
+            clearInterval(timer);
+            elapsedTime = Date.now() - startTime;
+            isRunning = false;
+
+            let breakMinutes = Math.floor((elapsedTime / (1000 * 60)) / 3);
+
+            if (breakMinutes > 15) {
+                breakMinutes = 15;
+            }
+
+            countDownTime = breakMinutes * 60;
+
+            if (countDownTime > 0) {
+                startCountDown();
+            }
+
+        }
+    } 
+
+    function startCountDown() {
+        clearInterval(countDownTimer);
+        countDownTimer = setInterval(() => {
+            if (countDownTime <= 0) {
+                clearInterval(countDownTimer);
+                display.textContent = "BreakOver!";
+                return;
+            }
+            updateCountDown(countDownTime);
+            countDownTime--;
+        }, 1000);
+    }
+
+    function updateCountDown(countDown) {
+        let minutes = Math.floor(countDown / (1000 * 60) % 60);
+        let seconds = Math.floor(countDown / 1000 % 60);
+
+        minutes = String(minutes).padStart(2, "0");
+        seconds = String(seconds).padStart(2, "0");
+
+        display.textContent = `${minutes}:${seconds}`;
+
     }
 
     function update() {
@@ -50,8 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
         display.textContent = `${hours}:${minutes}:${seconds}.${milliseconds}`;
     }
 
-    // Attach event listeners (better than inline `onclick`)
     startBtn.addEventListener("click", start);
     stopBtn.addEventListener("click", stop);
     resetBtn.addEventListener("click", reset);
+    break_button.addEventListener("click", breakBtn);
 });
