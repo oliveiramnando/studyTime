@@ -127,3 +127,10 @@ nav .flex {
 #resetBtn:hover{
     background-color: hsl(0, 0%, 40%);
 }
+
+#resetBtn{
+    background-color: hsl(291, 100%, 37%);
+}
+#resetBtn:hover{
+    background-color: hsl(291, 100%, 27%);
+}
