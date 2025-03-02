@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>studyTime</title>
     <link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1 id="myH1">Study Time</h1>
+    <div class="popup">
+        <nav>
+            <h1 class="flex">Study Time</h1>
+            <button id="settings">Settings</button>
+        </nav>
 
-    <div class="container">
-        <div id="display">
-            00:00:00.00
-        </div>
-        <div id="controls">
-            <button id="startBtn" onclick="start()">Start</button>
-            <button id="stopBtn" onclick="stop()">Stop</button>
-            <button id="resetBtn" onclick="reset()">Reset</button>
+        <div class="container__timer">
+            <div id="display">
+                00:00:00.00
+            </div>
+            <div id="controls">
+                <button id="startBtn" onclick="start()">Start</button>
+                <button id="stopBtn" onclick="stop()">Stop</button>
+                <button id="resetBtn" onclick="reset()">Reset</button>
+            </div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

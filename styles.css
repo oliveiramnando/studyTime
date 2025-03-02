@@ -1,17 +1,82 @@
+html{
+    width: 25rem;
+    height: 20rem;
+}
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Ariel", sans-serif;
+}
+
 body{
+    color: #fff;
+    background-color: #7A1CAC;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: hsl(0, 0%, 90%);
+}
+
+.popup{
+    width: 25rem;
+    min-height: 20rem;
+    transition: all .3s ease-in-out;
+    overflow: hidden;
+}
+
+.popup.settings {
+    width: 25rem;
+    min-height: 25rem;
+}
+
+nav {
+    background-color: #2E073F;
+    flex-direction: row;
+    align-items: center;
+    gap: .2rem;
+    height: 2rem;
+    margin-bottom: .5rem;
+    padding: .5rem;
+    display: flex;
+}
+
+nav h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1em;
+}
+
+nav button {
+    height: inherit;
+    width: inherit;
+    cursor: pointer;
+    background-color: #EBD3F8;
+    border: 0;
+    outline: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+}
+
+nav .flex {
+    flex: 1;
+}
+
+.title {
+    text-align: center;
+    background-color: #574a8b;
+    padding: .5rem;
+    font-size: 1.3rem
 }
 
 #myH1{
     font-size: 4rem;
     font-family: "Ariel", sans-serif;
-    color: hsl(0, 0%, 25%);
+    color: #EBD3F8;
 }
 
-#container{
+.container__timer{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,11 +87,10 @@ body{
 }
 
 #display{
-    font-size: 5rem;
+    font-size: 3rem;
     font-family: monospace;
     font-weight: bold;
     color: rgb(0, 0, 0);
-    text-shadow: 2px 2px 2px hwb(0 0% 100%);
     margin-bottom: 25px;
 }
 

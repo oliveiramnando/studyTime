@@ -1,10 +1,11 @@
 {
     "name": "studyBud",
-    "description": "Study helper. Times how long youve studied for, and your breaks",
+    "description": "Study helper. Times how long you've studied for, and your breaks",
     "version": "1.0",
+    "permissions": ["storage", "tabs"],
     "manifest_version": 3,
     "action": {
         "default_popup": "study.html",
-        "default_icon": "nerd.png"
+        "default_icon": "timer.png"
     }
 }
