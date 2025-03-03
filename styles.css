@@ -94,12 +94,16 @@ nav .flex {
     margin-bottom: 25px;
 }
 
+div button {
+    float: left;
+}
+
 #controls button{
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
     padding: 10px 20px;
     margin: 5px;
-    min-width: 125px;
+    min-width: 100px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
