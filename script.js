@@ -45,19 +45,22 @@ document.addEventListener("DOMContentLoaded", () => {
             clearInterval(timer);
             elapsedTime = Date.now() - startTime;
             isRunning = false;
-
-            countDownTime = elapsedTime / 3;
-
-            if (Math.floor(countDownTime / (1000 * 60) % 60) > 15) { // if the third of the time is greater than 15 minutes then...
-                countDownTime = 15 * 60 * 60 * 1000;
-            }
-
-            if (countDownTime > 0) {
-                clearInterval(countDown_Timer);
-                countDown_Timer = setInterval(updateCountDown, 10);
-                isCountingDown = true;
-            }
         }
+
+        countDownTime = elapsedTime / 3;
+
+        if (Math.floor(countDownTime / (1000 * 60) % 60) > 15) { // if the third of the time is greater than 15 minutes then...
+            countDownTime = 15 * 60 * 1000;
+        }
+
+        if (countDownTime > 0) {
+            clearInterval(countDown_Timer);
+            countDown_Timer = setInterval(updateCountDown, 10);
+            isCountingDown = true;
+        }
+
+        elapsedTime = 0;
+        startTime = 0;
     } 
 
     function update() {
@@ -78,14 +81,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateCountDown() {
+ 
+        countDownTime -= 10;
+
         if (countDownTime <= 0) {
-            clearInterval(countDownTimer);
-            display.textContent = "00:00:00.00"; 
+            clearInterval(countDown_Timer);
             isCountingDown = false;
+            display.textContent = "Break Over!";
             return;
         }
-
-        countDownTime -= 10;
 
         let minutes = Math.floor(countDownTime / (1000 * 60) % 60);
         let seconds = Math.floor(countDownTime / 1000 % 60);
