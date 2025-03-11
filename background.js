@@ -3,7 +3,7 @@ let countDown_Timer = null;
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        chrome.storage.local.get(["startTime", "elapsedTime", "isRunning", "countDownTime", "isCountingDown"], (data) => {
+        chrome.storage.local.get(["startTime", "elapsedTime", "isRunning", "countDownTime", "isCountingDown", "display"], (data) => {
 
             if (request.action === "start") {
                 if (!data.isRunning) {
@@ -12,7 +12,8 @@ chrome.runtime.onMessage.addListener(
                     chrome.storage.local.set({
                         startTime: newStartTime,
                         elapsedTime: data.elapsedTime || 0,
-                        isRunning: true
+                        isRunning: true,
+                        isCountingDown: false
                     });
 
                     if (timer) clearInterval(timer); // Stops any existing interval
@@ -51,7 +52,9 @@ chrome.runtime.onMessage.addListener(
                     startTime: 0,
                     elapsedTime: 0,
                     isRunning: false,
-                    countDownTime: 0
+                    isCountingDown: false,
+                    countDownTime: 0,
+                    display: "00:00:00.00"
                 })
                 sendResponse({ success: true });
             }
@@ -97,8 +100,12 @@ chrome.runtime.onMessage.addListener(
 
                             chrome.storage.local.set({ 
                                 isCountingDown: false, 
-                                countDownTime: 0 
+                                countDownTime: 0,
+                                display: "Break Over!"
                             });
+
+                            notification();
+
                         } else {
                             chrome.storage.local.set({ countDownTime: breakTime });
                         }
@@ -114,3 +121,14 @@ chrome.runtime.onMessage.addListener(
         return true;
     }
 );
+
+function notification() {
+    chrome.notifications.create({
+        type: "basic",
+        iconUrl: "/timer.png",
+        title: "StudyTime",
+        message: "Break Over!"
+    }, (notificationId) => {
+        console.log("Notification Created:", notificationId);
+    });
+}

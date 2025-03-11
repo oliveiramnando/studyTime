@@ -53,9 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
             let remainingTime = data.countDownTime || 0;
 
             if (remainingTime <= 0) {
-                chrome.storage.local.set({ isCountingDown: false });
+                // chrome.storage.local.set({ isCountingDown: false });
                 display.textContent = "Break Over!";
-                notification();
                 return;
             }
     
@@ -71,20 +70,31 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
         })
     }
 
-    function notification() {
-        chrome.notifications.create({
-            type: "basic",
-            iconUrl: "/timer.png",
-            title: "StudyTime",
-            message: "Break Over!"
-        }, (notificationId) => {
-            console.log("Notification Created:", notificationId);
-        });
-    }
+    // function notification() {
+    //     chrome.notifications.create({
+    //         type: "basic",
+    //         iconUrl: "/timer.png",
+    //         title: "StudyTime",
+    //         message: "Break Over!"
+    //     }, (notificationId) => {
+    //         console.log("Notification Created:", notificationId);
+    //     });
+    // }
 
-    chrome.storage.onChanged.addListener((changes) => {
+    chrome.storage.local.get(["display"], (data) => {   // checks display when popup opens
+        if (data.display) {
+            // console.log("Popup opened, setting display:", data.display);
+            display.textContent = data.display;
+        }
+    });
+
+    chrome.storage.onChanged.addListener((changes) => {     // listens for storage changes; updates display
         if (changes.elapsedTime) update();
         if (changes.countDownTime) updateCountDown();
+        if (changes.display) {
+            // console.log("Display updated:", changes.display.newValue);
+            display.textContent = changes.display.newValue;  
+        }
     })
 
     startBtn.addEventListener("click", start); 
