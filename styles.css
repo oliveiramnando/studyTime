@@ -142,3 +142,27 @@ div button {
 #breakBtn:hover{
     background-color: hsl(291, 100%, 27%);
 }
+
+.streak-section{
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    font-size: .8rem;
+    font-weight: 700;
+    display: flex
+}
+
+#current-streak-message,#best-streak-message {
+    text-align: center;
+    font-size: 1rem;
+}
+
+.streak {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex
+}
+
