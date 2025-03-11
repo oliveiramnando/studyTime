@@ -1,32 +1,36 @@
-let startTime = 0;
-let elapsedTime = 0;
-let countDownTime = 0;
-
-let isRunning = false;
-let timer = null;
-let countDown_Timer = null;
-let isCountingDown = false;
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        if (message.action === "start") {
-            chrome.storage.local.get(["startTime", "elapsedTime", "isRunning", "timer"], (data) => {
+        chrome.storage.local.get(["timer", "startTime", "elapsedTime", "isRunning", "countDown_Timer", "countDownTime", "isCountingDown"], (data) => {
+
+            if (request.action === "start") {
                 if (!data.isRunning) {
-                    data.startTime = Date.now() - data.elapsedTime;
-                    data.timer = setInterval(update, 10);
-                    data.isRunning = true;
+                    const newStartTime = Date.now() - (data.elapsedTime || 0);
+
+                    chrome.storage.local.set({
+                        startTime: newStartTime,
+                        elapsedTime: data.elapsedTime || 0,
+                        isRunning: true
+                    });
+
+                    const newTimer = setInterval(() => {
+                        chrome.storage.local.get(["startTime"], (updatedData) => {
+                            if (!updatedData.startTime) return;
+                            const currentTime = Date.now();
+                            const elapsedTime = currentTime - updatedData.startTime;
+                            chrome.storage.local.set({ elapsedTime });
+                        });
+                    }, 10);
+
+                    chrome.storage.local.set({ timerId: newTimer });
                 }
-            });
-            return true;
-        }
-        else if (message.action === "stop") {
-            return true;
-        }
-        else if (message.action === "reset") {
-            return true;
-        } 
-        else if (message.action === "break") {
-            return true;
-        }
+                sendResponse({ success: true });
+            }
+
+            else if (request.action === "stop") {}
+            else if (request.action === "reset") {}
+            else if (request.action === "break") {}
+        });
+        return true;
     }
-)
+);

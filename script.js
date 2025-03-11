@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
             startTime = Date.now() - elapsedTime;
             timer = setInterval(update, 10);
             isRunning = true;
+            chrome.storage.local.set({ startTime, elapsedTime, isRunning});
         }
     }
 
