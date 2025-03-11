@@ -53,8 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
             let remainingTime = data.countDownTime || 0;
 
             if (remainingTime <= 0) {
-                data.isCountingDown = false;
+                chrome.storage.local.set({ isCountingDown: false });
                 display.textContent = "Break Over!";
+                notification();
                 return;
             }
     
@@ -68,6 +69,17 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
     
             display.textContent = `${minutes}:${seconds}.${milliseconds}`;
         })
+    }
+
+    function notification() {
+        chrome.notifications.create({
+            type: "basic",
+            iconUrl: "/timer.png",
+            title: "StudyTime",
+            message: "Break Over!"
+        }, (notificationId) => {
+            console.log("Notification Created:", notificationId);
+        });
     }
 
     chrome.storage.onChanged.addListener((changes) => {
