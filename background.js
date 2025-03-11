@@ -36,18 +36,6 @@ chrome.runtime.onMessage.addListener(
                     clearInterval(timer);
                     const newElapsedTime = Date.now() - data.startTime;
 
-                    // let hours = Math.floor(newElapsedTime / (1000 * 60 * 60));
-                    // let minutes = Math.floor(newElapsedTime / (1000 * 60) % 60);
-                    // let seconds = Math.floor(newElapsedTime / 1000 % 60);
-                    // let milliseconds = Math.floor(newElapsedTime % 1000 / 10);
-        
-                    // hours = String(hours).padStart(2, "0");
-                    // minutes = String(minutes).padStart(2, "0");
-                    // seconds = String(seconds).padStart(2, "0");
-                    // milliseconds = String(milliseconds).padStart(2, "0");
-        
-                    // let formattedTime = `${hours}:${minutes}:${seconds}.${milliseconds}`;
-
                     let formattedTime = formatTime(newElapsedTime);
 
                     chrome.storage.local.set({

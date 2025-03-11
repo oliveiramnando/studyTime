@@ -70,17 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
         })
     }
 
-    // function notification() {
-    //     chrome.notifications.create({
-    //         type: "basic",
-    //         iconUrl: "/timer.png",
-    //         title: "StudyTime",
-    //         message: "Break Over!"
-    //     }, (notificationId) => {
-    //         console.log("Notification Created:", notificationId);
-    //     });
-    // }
-
     chrome.storage.local.get(["display"], (data) => {   // checks display when popup opens
         if (data.display) {
             // console.log("Popup opened, setting display:", data.display);
