@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
 
     function reset() {
         chrome.runtime.sendMessage({ action: "reset"});
+        display.textContent = "00:00:00.00"
     }
 
     function breakBtn() {
