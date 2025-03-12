@@ -92,7 +92,7 @@ nav .flex {
 
 #display{
     font-size: 3rem;
-    font-family: monospace;
+    font-family: "Lucida Console", monospace;
     font-weight: bold;
     color: rgb(0, 0, 0);
     margin-bottom: 25px;

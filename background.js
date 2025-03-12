@@ -3,7 +3,7 @@ let countDown_Timer = null;
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        chrome.storage.local.get(["startTime", "elapsedTime", "isRunning", "countDownTime", "isCountingDown", "display"], (data) => {
+        chrome.storage.local.get(["startTime", "elapsedTime", "isRunning", "countDownTime", "isCountingDown", "display", "currentStreak", "bestStreak"], (data) => {
 
             if (request.action === "start") {
                 if (!data.isRunning) {
@@ -26,6 +26,7 @@ chrome.runtime.onMessage.addListener(
                             chrome.storage.local.set({ elapsedTime });
                         });
                     }, 10);
+                    updateStreak();
                 }
                 sendResponse({ success: true });
             }
@@ -43,9 +44,7 @@ chrome.runtime.onMessage.addListener(
                         isRunning: false,
                         display: formattedTime 
                     });
-
-                    update()
-
+                    updateStreak(); // might remove
                 }
                 sendResponse({ success: true });
             }
@@ -62,6 +61,8 @@ chrome.runtime.onMessage.addListener(
                     countDownTime: 0,
                     display: "00:00:00.00"
                 })
+
+                updateStreak(); // might remove
                 sendResponse({ success: true });
             }
 
@@ -122,6 +123,7 @@ chrome.runtime.onMessage.addListener(
                     elapsedTime: 0,
                     startTime: 0
                 });
+                updateStreak(); // might make it so that streak only counts if you've taken a break for a certain amount of time
             }
         });
         return true;
@@ -152,4 +154,46 @@ function formatTime(timeToBeFormatted) {
 
     let formattedTime = `${hours}:${minutes}:${seconds}.${milliseconds}`;
     return formattedTime;
+}
+
+function updateStreak() {
+    chrome.storage.local.get(['lastActiveDate', 'currentStreak', 'bestStreak'], (data) => {
+        let lastActiveDate = data.lastActiveDate;
+        let currentStreak = data.currentStreak || 0;
+        let bestStreak = data.bestStreak || 0;
+
+        let today = new Date().toLocaleDateString();
+
+        if (!lastActiveDate) {
+            currentStreak = 1;
+            bestStreak = 1;
+            chrome.storage.local.set({ 
+                lastActiveDate: today, 
+                currentStreak, 
+                bestStreak 
+            });
+            return;
+        }
+
+        let lastDate = new Date(lastActiveDate).toLocaleDateString();
+
+        if (lastDate !== today) {
+            let yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+
+            if (lastDate === yesterday.toLocaleDateString()) {
+                currentStreak++; 
+            } else {
+                currentStreak = 1;
+            }
+
+            bestStreak = Math.max(bestStreak, currentStreak);
+
+            chrome.storage.local.set({ 
+                lastActiveDate: today, 
+                currentStreak, 
+                bestStreak 
+            });
+        }
+    });
 }

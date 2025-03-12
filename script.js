@@ -1,10 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {  // Document Object Model Manipulation
 
     const display = document.getElementById("display");
+
     const startBtn = document.getElementById("startBtn");
     const stopBtn = document.getElementById("stopBtn");
     const resetBtn = document.getElementById("resetBtn");
     const break_button = document.getElementById("breakBtn");
+
+    const currentStreak = document.getElementById("current-streak-message");
+    const bestStreak = document.getElementById("best-streak-message");
 
     let startTime = 0;
     let elapsedTime = 0;
@@ -70,6 +74,13 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
         })
     }
 
+    function updateStreakDisplay() {
+        chrome.storage.local.get(["currentStreak", "bestStreak"], (data) => {
+            currentStreak.textContent = `Current Streak: ${data.currentStreak}`;
+            bestStreak.textContent = `Best Streak: ${data.bestStreak}`;
+        });
+    }
+
     chrome.storage.local.get(["display"], (data) => {   // checks display when popup opens
         if (data.display) {
             // console.log("Popup opened, setting display:", data.display);
@@ -77,12 +88,23 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
         }
     });
 
+    chrome.storage.local.get(["currentStreak", "bestStreak"], (data) => {   // checks streak when popup opens
+        if (data.currentStreak || data.bestStreak) {
+            currentStreak.textContent = `Current Streak: ${data.currentStreak}`;
+            bestStreak.textContent = `Best Streak: ${data.bestStreak}`;
+        }
+    });
+
+
     chrome.storage.onChanged.addListener((changes) => {     // listens for storage changes; updates display
         if (changes.elapsedTime) update();
         if (changes.countDownTime) updateCountDown();
         if (changes.display) {
             // console.log("Display updated:", changes.display.newValue);
             display.textContent = changes.display.newValue;  
+        }
+        if (changes.currentStreak || changes.bestStreak) {
+            updateStreakDisplay();
         }
     })
 
