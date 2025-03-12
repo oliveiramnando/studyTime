@@ -2,7 +2,7 @@
     "name": "studyBud",
     "description": "Study helper. Times how long you've studied for, and your breaks",
     "version": "1.0",
-    "permissions": ["storage", "notifications", "tabs"],
+    "permissions": ["storage", "notifications"],
     "manifest_version": 3,
     "background": {
         "service_worker": "background.js"
