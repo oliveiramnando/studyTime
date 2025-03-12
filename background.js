@@ -87,7 +87,7 @@ chrome.runtime.onMessage.addListener(
                         type: "basic",
                         iconUrl: "/timer.png",
                         title: "StudyTime",
-                        message: "Must study for at least 3 minutes!"
+                        message: "Study for at least 3 minutes! LOCK IN!"
                     }, (notificationId) => {
                         console.log("Notification Created:", notificationId);
                     });
@@ -133,7 +133,7 @@ chrome.runtime.onMessage.addListener(
                     elapsedTime: 0,
                     startTime: 0
                 });
-                updateStreak(); // might make it so that streak only counts if you've taken a break for a certain amount of time
+                updateStreak(); 
             }
         });
         return true;
