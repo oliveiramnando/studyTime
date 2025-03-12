@@ -2,8 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
 
     const display = document.getElementById("display");
 
-    const startBtn = document.getElementById("startBtn");
-    const stopBtn = document.getElementById("stopBtn");
+    const startStopBtn = document.getElementById('startStopBtn')
+
     const resetBtn = document.getElementById("resetBtn");
     const break_button = document.getElementById("breakBtn");
 
@@ -17,21 +17,40 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
     let countDownTime = 0;
     let isCountingDown = false;
 
-    function start() {
-        chrome.runtime.sendMessage({ action: "start"});
+    function updateButtonState(isRunning) {
+        if (isRunning) {
+            startStopBtn.textContent = "Stop";
+            startStopBtn.classList.add("active");
+        } else {
+            startStopBtn.textContent = "Start";
+            startStopBtn.classList.remove("active");
+        }
     }
 
-    function stop() {
-        chrome.runtime.sendMessage({ action: "stop"});
+    function startStop () {
+        chrome.storage.local.get(["isRunning"], (data) => {
+            if (!data.isRunning) {
+                // console.log("timer is not running so i will start")
+                chrome.runtime.sendMessage({ action: "start"});
+                updateButtonState(true);
+            } 
+            if (data.isRunning) {
+                // console.log("timer is running so i will stop")
+                chrome.runtime.sendMessage({ action: "stop"});
+                updateButtonState(false);
+            }
+        })
     }
 
     function reset() {
         chrome.runtime.sendMessage({ action: "reset"});
         display.textContent = "00:00:00.00"
+        updateButtonState(false);
     }
 
     function breakBtn() {
         chrome.runtime.sendMessage({ action: "break"});
+        updateButtonState(false);
     } 
 
     function update() {
@@ -95,6 +114,10 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
         }
     });
 
+    chrome.storage.local.get(["isRunning"], (data) => {
+        updateButtonState(data.isRunning);
+    });
+
 
     chrome.storage.onChanged.addListener((changes) => {     // listens for storage changes; updates display
         if (changes.elapsedTime) update();
@@ -108,8 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
         }
     })
 
-    startBtn.addEventListener("click", start); 
-    stopBtn.addEventListener("click", stop);
+    startStopBtn.addEventListener("click", startStop); 
     resetBtn.addEventListener("click", reset);
     break_button.addEventListener("click", breakBtn);
 });
