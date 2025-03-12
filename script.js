@@ -28,8 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function startStop () {
-        chrome.storage.local.get(["isRunning"], (data) => {
-            if (!data.isRunning) {
+        chrome.storage.local.get(["isRunning", "isCountingDown"], (data) => {
+            if (!data.isRunning && !data.isCountingDown) {
                 chrome.runtime.sendMessage({ action: "start"});
                 updateButtonState(true);
             } 

@@ -44,7 +44,6 @@ chrome.runtime.onMessage.addListener(
                         isRunning: false,
                         display: formattedTime 
                     });
-                    updateStreak(); // might remove
                 }
                 sendResponse({ success: true });
             }
@@ -62,7 +61,6 @@ chrome.runtime.onMessage.addListener(
                     display: "00:00:00.00"
                 })
 
-                updateStreak(); // might remove
                 sendResponse({ success: true });
             }
 
@@ -83,6 +81,18 @@ chrome.runtime.onMessage.addListener(
                 }
 
                 let breakTime = newElapsedTime / 3;
+
+                if (breakTime < (60 * 1000)) {
+                    chrome.notifications.create({
+                        type: "basic",
+                        iconUrl: "/timer.png",
+                        title: "StudyTime",
+                        message: "Must study for at least 3 minutes!"
+                    }, (notificationId) => {
+                        console.log("Notification Created:", notificationId);
+                    });
+                    return;
+                }
 
                 if (Math.floor(breakTime / (1000 * 60) % 60) > 15) { // if the third of the time is greater than 15 minutes then...
                     breakTime = 15 * 60 * 1000;                     // sets to 15 minutes (in ms)
