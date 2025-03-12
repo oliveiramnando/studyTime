@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {  // Document Object Model Manipulation
+document.addEventListener("DOMContentLoaded", () => { 
 
     const display = document.getElementById("display");
 
@@ -30,12 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
     function startStop () {
         chrome.storage.local.get(["isRunning"], (data) => {
             if (!data.isRunning) {
-                // console.log("timer is not running so i will start")
                 chrome.runtime.sendMessage({ action: "start"});
                 updateButtonState(true);
             } 
             if (data.isRunning) {
-                // console.log("timer is running so i will stop")
                 chrome.runtime.sendMessage({ action: "stop"});
                 updateButtonState(false);
             }
@@ -76,7 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
             let remainingTime = data.countDownTime || 0;
 
             if (remainingTime <= 0) {
-                // chrome.storage.local.set({ isCountingDown: false });
                 display.textContent = "Break Over!";
                 return;
             }
@@ -102,7 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
 
     chrome.storage.local.get(["display"], (data) => {   // checks display when popup opens
         if (data.display) {
-            // console.log("Popup opened, setting display:", data.display);
             display.textContent = data.display;
         }
     });
@@ -123,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {  // Document Object Model 
         if (changes.elapsedTime) update();
         if (changes.countDownTime) updateCountDown();
         if (changes.display) {
-            // console.log("Display updated:", changes.display.newValue);
             display.textContent = changes.display.newValue;  
         }
         if (changes.currentStreak || changes.bestStreak) {

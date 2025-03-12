@@ -1,4 +1,4 @@
-let timer = null; // moved to this file because this file is persistent
+let timer = null; 
 let countDown_Timer = null;
 
 chrome.runtime.onMessage.addListener(
@@ -16,7 +16,7 @@ chrome.runtime.onMessage.addListener(
                         isCountingDown: false
                     });
 
-                    if (timer) clearInterval(timer); // Stops any existing interval
+                    if (timer) clearInterval(timer); 
 
                     timer = setInterval(() => {
                         chrome.storage.local.get(["startTime"], (updatedData) => {
